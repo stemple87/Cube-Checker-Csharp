@@ -1,30 +1,26 @@
-// using Nancy;
-// using madLibLibrary;
+using Nancy;
+using System.Collections.Generic;
 
-//   namespace test {
-//       public class AlexModule : NancyModule {
-//         public AlexModule() {
+namespace RectangleChecker
+{
+  public class HomeModule : NancyModule
+  {
+    public HomeModule()
+    {
+      Get["/"] = _ => {
+        return View["rectangle_form.cshtml"];
+      };
+      Get["/rectangle_result"] = _ => {
+        Dictionary<string, object> Shapes = new Dictionary<string, object>();
+        Rectangle myRectangle = new Rectangle(Request.Query["side-length"], Request.Query["side-width"]);
+        Shapes.Add("ResultingRectangle", myRectangle);
 
-//         Get["/form"] = _ => {
-//           return View["form.html"];
-//         };
-
-//         Get["/story"] = _ => {
-
-//         storyVariables exampleStory = new storyVariables {
-
-//           name1 = Request.Query["name1"],
-//           name2 = Request.Query["name2"],
-//           creature = Request.Query["creature"],
-//           weapon = Request.Query["weapon"],
-//           vehicle = Request.Query["vehicle"],
-//           treasure = Request.Query["treasure"]
-//         };
-//           return View["story.html", exampleStory];
-//         };
-//       }
-//    }
-// }
-
-
-// Test example above
+        if (myRectangle.IsSquare()) {
+          Cube myCube = new Cube(myRectangle);
+          Shapes.Add("ResultingCube", myCube);
+        }
+        return View["rectangle_result.cshtml", Shapes];
+      };
+    }
+  }
+}
